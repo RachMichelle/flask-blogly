@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{user.get_full_name()}}{% endblock %}
+
+{% block header %}{{user.get_full_name()}}{% endblock %}
+
+{% block content %}
+<img src="{{user.img_url}}" alt="user photo">
+
+<form action="/user/{{user.id}}/edit">
+    <button>Edit</button>
+</form>
+
+<a href="/">Go Back</a>
+{% endblock %}
