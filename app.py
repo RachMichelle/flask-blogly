@@ -23,7 +23,7 @@ def home():
 def user_list():
     """shows list of all users"""
 
-    users = User.query.all()
+    users = User.query.order_by('last_name')
     
     return render_template('users.html', users=users)
 
