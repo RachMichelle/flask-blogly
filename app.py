@@ -61,7 +61,7 @@ def handle_edit_user(user_id):
 
 @app.route('/user/<user_id>/edit')
 def edit_user(user_id):
-    """edit user associated with user id"""
+    """show edit user form"""
 
     user = User.query.get(user_id)
     return render_template('user-edit.html', user=user)
@@ -103,7 +103,68 @@ def delete_user(user_id):
 
 @app.route('/posts/<post_id>')
 def show_post(post_id):
+    """shows full post details for associated post id"""
 
     post = Post.query.get(post_id)
 
     return render_template('post.html', post=post)
+
+@app.route('/user/<user_id>/posts/new')
+def new_post(user_id):
+    """show form to add a new post"""
+
+    user = User.query.get(user_id)
+
+    return render_template('new-post.html', user=user)
+
+@app.route('/user/<user_id>/posts/new', methods=['POST'])
+def handle_new_post(user_id):
+    """add new post to db on submit"""
+
+    title = request.form['title']
+    content = request.form['content']
+
+    post = Post(title=title, content=content, user_id=user_id)
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/user/{user_id}')
+
+@app.route('/posts/<post_id>/edit')
+def edit_post(post_id):
+    """show form to edit existing post """
+
+    post = Post.query.get(post_id)
+
+    return render_template('post-edit.html', post=post)
+
+@app.route('/posts/<post_id>/edit', methods=['POST'])
+def handle_edit_post(post_id):
+    """submit edits to associated post"""
+
+    post = Post.query.get(post_id)
+
+    title = request.form['title']
+    content = request.form['content']
+
+    post.title=title
+    post.content=content
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post.id}')
+
+@app.route('/delete/<post_id>')
+def delete_post(post_id):
+    """delete post with associated post id, redirect back to user info page"""
+
+    post=Post.query.get(post_id)
+    user_id=post.usr.id
+
+    Post.query.filter_by(id=post_id).delete()
+
+    db.session.commit()
+
+    return redirect(f'/user/{user_id}')
