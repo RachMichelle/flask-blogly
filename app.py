@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -32,7 +32,8 @@ def show_user_info(user_id):
     """show info for user associated with user id"""
 
     user = User.query.get(user_id)
-    return render_template('user-info.html', user=user)
+    posts = Post.query.filter_by(user_id=user_id)
+    return render_template('user-info.html', user=user, posts=posts)
 
 
 @app.route('/user/<user_id>/edit', methods=['POST'])
@@ -61,6 +62,7 @@ def handle_edit_user(user_id):
 @app.route('/user/<user_id>/edit')
 def edit_user(user_id):
     """edit user associated with user id"""
+
     user = User.query.get(user_id)
     return render_template('user-edit.html', user=user)
 
@@ -72,7 +74,7 @@ def new_user():
 
 @app.route('/users/new', methods=['POST'])
 def handle_new_user():
-    """submit new user form & redired to users list"""
+    """submit new user form & redirect to users list"""
 
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -98,3 +100,10 @@ def delete_user(user_id):
     db.session.commit()
     
     return redirect('/users')
+
+@app.route('/posts/<post_id>')
+def show_post(post_id):
+
+    post = Post.query.get(post_id)
+
+    return render_template('post.html', post=post)
