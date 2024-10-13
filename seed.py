@@ -1,7 +1,7 @@
 """sample data for blogly app users db"""
 
 from app import app
-from models import db, User, Post
+from models import db, User, Post, Tag, PostTag
 
 with app.app_context():
     db.drop_all()
@@ -21,4 +21,20 @@ with app.app_context():
     p4= Post(title='test 4', content='test post 4', user_id=3)
 
     db.session.add_all([p1, p2, p3, p4])
+    db.session.commit()
+
+
+    t1= Tag(name='test')
+    t2= Tag(name='another test')
+    t3= Tag(name= 'third test')
+
+    db.session.add_all([t1, t2, t3])
+    db.session.commit()
+
+    pt1= PostTag(post_id=1, tag_id=1)
+    pt2= PostTag(post_id=2, tag_id=1)
+    pt3= PostTag(post_id=3, tag_id=2)
+    pt4= PostTag(post_id=4, tag_id=3)
+
+    db.session.add_all([pt1, pt2, pt3, pt4])
     db.session.commit()

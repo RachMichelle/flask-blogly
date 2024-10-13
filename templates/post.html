@@ -10,6 +10,13 @@
 
 <span>By {{post.usr.get_full_name()}}</span>
 
+<h3>Tags :</h3>
+<ul>
+    {% for tag in tags %}
+    <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
+    {% endfor %}
+</ul>
+
 <form action="/posts/{{post.id}}/edit">
     <button>Edit</button>
 </form>
