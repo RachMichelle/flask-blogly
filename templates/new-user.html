@@ -6,15 +6,22 @@
 
 {% block content %}
 <form action="/users/new" method="post">
-    <label for="first_name">First Name:</label>
-    <input type="text" name="first_name" id="first_name">
-    <label for="last_name">Last Name:</label>
-    <input type="text" name="last_name" id="last_name">
-    <label for="img_url">Profile Picture:</label>
-    <input type="text" name="img_url" id="img_url">
+    <div class="mb-3">
+    <label for="first_name" class="form-label">First Name:</label>
+    <input type="text" name="first_name" id="first_name" class="form-control">
+    </div>
+    <div class="mb-3">
+    <label for="last_name" class="form-label">Last Name:</label>
+    <input type="text" name="last_name" id="last_name" class="form-control">
+    </div>
+    <div class="mb-3">
+    <label for="img_url" class="form-label">Profile Picture:</label>
+    <input type="text" name="img_url" id="img_url" class="form-control">
+    </div>
 
-    <button>Submit</button>
+    <button class="btn btn-outline-primary">Submit</button>
+    <a class="btn btn-outline-secondary" href="/" role="button">Cancel</a>
 </form>
 
-<a href="/">Cancel</a>
+
 {% endblock %}

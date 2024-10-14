@@ -7,13 +7,27 @@
 {% block content %}
 
 <ul>
-    {% for post in posts %}
-    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
-    {% endfor %}
+    <ul class="list-group list-group-flush">
+        {% for post in posts %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold"><a href="/posts/{{post.id}}">{{post.title}}</a></div>
+                <small>Posted by <a href="/user/{{post.usr.id}}">{{post.usr.get_full_name()}}</a></small>
+            </div>
+            {% for tag in post.tgs %}
+            <span class="badge text-bg-primary rounded-pill"><a href='/tags/{{tag.id}}'
+                    class="text-light">{{tag.name}}</a></span>
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
 </ul>
 
 <form action="/tags/{{tag.id}}/edit">
-    <button>Edit Tag</button>
+    <div class="mt-3">
+        <button class="btn btn-outline-info">Edit Tag</button>
+        <a class="btn btn-outline-primary" href="/tags" role="button">Back to All Tags</a>
+    </div>
 </form>
-<a href="/tags">Back to All Tags</a>
+
 {% endblock %}

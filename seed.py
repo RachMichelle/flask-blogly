@@ -25,8 +25,8 @@ with app.app_context():
 
 
     t1= Tag(name='test')
-    t2= Tag(name='another test')
-    t3= Tag(name= 'third test')
+    t2= Tag(name='dogs')
+    t3= Tag(name='cats')
 
     db.session.add_all([t1, t2, t3])
     db.session.commit()
@@ -35,6 +35,7 @@ with app.app_context():
     pt2= PostTag(post_id=2, tag_id=1)
     pt3= PostTag(post_id=3, tag_id=2)
     pt4= PostTag(post_id=4, tag_id=3)
+    pt5= PostTag(post_id=4, tag_id=2)
 
-    db.session.add_all([pt1, pt2, pt3, pt4])
+    db.session.add_all([pt1, pt2, pt3, pt4, pt5])
     db.session.commit()

@@ -2,25 +2,51 @@
 
 {% block title %}{{user.get_full_name()}}{% endblock %}
 
-{% block header %}{{user.get_full_name()}}{% endblock %}
+{% block header %}User Info{% endblock %}
 
 {% block content %}
-<img src="{{user.img_url}}" alt="user photo">
 
-<form action="/user/{{user.id}}/edit">
-    <button>Edit</button>
-</form>
+<div class="container d-flex justify-content-center">
+    <div class="card mb-3" style="max-width: 700px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{user.img_url}}" class="img-fluid rounded-start" alt="user image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{user.get_full_name()}}</h5>
+                    <p class="card-text">
+                    <form action="/user/{{user.id}}/edit">
+                        <div class="d-grid mt-3">
+                        <button class="btn btn-outline-info btn-block">Edit</button>
+                        </div>
+                    </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <h2>Posts:</h2>
-<ul>
-    {% for p in posts %}
-    <li><a href="/posts/{{p.id}}">{{p.title}}</a></li>
+<ul class="list-group list-group-flush">
+    {% for post in posts %}
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+        <div class="fw-bold"><a href="/posts/{{post.id}}">{{post.title}}</a></div>
+        <small>Posted by <a href="/user/{{post.usr.id}}">{{post.usr.get_full_name()}}</a></small>
+      </div>
+      {% for tag in post.tgs %}
+      <span class="badge text-bg-primary rounded-pill"><a href='/tags/{{tag.id}}' class="text-light">{{tag.name}}</a></span>
+      {% endfor %}
+    </li>
     {% endfor %}
 </ul>
 
 <form action="/user/{{user.id}}/posts/new">
-    <button>Add Post</button>
+    <button class="btn btn-outline-primary">Add Post</button>
 </form>
 
-<a href="/">Go Back</a>
 {% endblock %}

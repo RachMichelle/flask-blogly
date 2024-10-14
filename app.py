@@ -15,9 +15,10 @@ connect_db(app)
 
 @app.route('/')
 def home():
-    """redirects to users page"""
+    """show home page"""
 
-    return redirect('/users')
+    posts=Post.query.order_by(Post.created_at).limit(5)
+    return render_template('home.html', posts=posts)
 
 @app.route('/users')
 def user_list():

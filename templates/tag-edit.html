@@ -6,15 +6,21 @@
 
 {% block content %}
 <form action="/tags/{{tag.id}}/edit" method="post">
-    <label for="name">Name: </label>
-    <input type="text"  name="name" id="name" value="{{tag.name}}">
+    <label for="name" class="form-label">Name: </label>
+    <div class="input-group mb-3">
+        <input type="text" name="name" id="name" value="{{tag.name}}" class="form-control">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary">Save Changes</button>
+            <a class="btn  btn-outline-secondary" href="/tags/{{tag.id}}" role="button">Cancel</a>
+        </div>
+    </div>
+</form>
 
-    <button>Save Changes</button>
-    </form>
+<form action="/delete/{{tag.id}}" method="post">
+    <div class="d-grid mt-3">
+        <button class="btn btn-danger btn-block">Delete Tag</button>
+    </div>
+</form>
 
-    <form action="/delete/{{tag.id}}" method="post">
-        <button>Delete Tag</button>
-    </form>
 
-    <a href="/tags/{{tag.id}}">Cancel</a>
 {% endblock %}

@@ -7,14 +7,19 @@
 {% block content %}
 
 <form action="/user/{{user.id}}/posts/new" method="post">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title">
-    <label for="content">content</label>
-    <input type="text" name="content" id="content">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">content</label>
+        <textarea name="content" id="content" class="form-control"></textarea>
+    </div>
 
-    <button>Add Post</button>
+    <button class="btn btn-outline-primary">Add Post</button>
+    <a href="/user/{{user.id}}" class="btn btn-outline-secondary" role="button">Cancel</a>
 </form>
 
-<a href="/user/{{user.id}}">Cancel</a>
+
 
 {% endblock %}

@@ -7,18 +7,25 @@
 {% block content%}
 
 <form action="/posts/{{post.id}}/edit" method="post">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" value="{{post.title}}">
-    <label for="content">content</label>
-    <textarea name="content" id="content">{{post.content}}</textarea>
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" value="{{post.title}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">content</label>
+        <textarea name="content" id="content" class="form-control">{{post.content}}</textarea>
+    </div>
 
-    <button>Save Changes</button>
+    <button class="btn btn-outline-primary">Save Changes</button>
+    <a class="btn btn-outline-secondary" href="/posts/{{post.id}}" role="button">Cancel</a>
 </form>
 
-<form action="/delete/{{post.id}}" methos="post">
-    <button>Delete Post</button>
+<form action="/delete/{{post.id}}" method="post">
+    <div class="d-grid mt-3">
+        <button class="btn btn-danger btn-block">Delete Post</button>
+    </div>
 </form>
 
-<a href="/posts/{{post.id}}">Cancel</a>
+
 
 {% endblock %}

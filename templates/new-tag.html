@@ -7,12 +7,15 @@
 {% block content %}
 
 <form action="/tags/new" method="post">
-    <label for="name">Name: </label>
-    <input type="text"  name="name" id="name">
+    <label for="name" class="form-label">Name: </label>
+    <div class="input-group mb-3">
+        <input type="text" name="name" id="name" class="form-control">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary">Add</button>
+            <a href="/tags" class="btn btn-outline-secondary" role="button">Cancel</a>
+        </div>
+    </div>
 
-    <button>Add</button>
 </form>
-
-<a href="/tags">Go Back</a>
 
 {% endblock %}
