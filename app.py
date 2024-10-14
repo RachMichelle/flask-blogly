@@ -17,7 +17,7 @@ connect_db(app)
 def home():
     """show home page"""
 
-    posts=Post.query.order_by(Post.created_at).limit(5)
+    posts=Post.query.order_by(Post.created_at.desc()).limit(5)
     return render_template('home.html', posts=posts)
 
 @app.route('/users')
@@ -92,8 +92,6 @@ def handle_new_user():
 
     return redirect('/users')
 
-# ** Foreign key error for posts table. Cascade delete?
-
 @app.route('/delete/<user_id>', methods = ['POST'])
 def delete_user(user_id):
     """delete a user"""
@@ -117,8 +115,9 @@ def new_post(user_id):
     """show form to add a new post"""
 
     user = User.query.get(user_id)
+    tags = Tag.query.all()
 
-    return render_template('new-post.html', user=user)
+    return render_template('new-post.html', user=user, tags=tags)
 
 @app.route('/user/<user_id>/posts/new', methods=['POST'])
 def handle_new_post(user_id):
@@ -128,6 +127,9 @@ def handle_new_post(user_id):
     content = request.form['content']
 
     post = Post(title=title, content=content, user_id=user_id)
+
+    tags=[int(tag) for tag in request.form.getlist('tags')]
+    post.tgs=Tag.query.filter(Tag.id.in_(tags)).all()
 
     db.session.add(post)
     db.session.commit()
@@ -139,8 +141,9 @@ def edit_post(post_id):
     """show form to edit existing post """
 
     post = Post.query.get(post_id)
+    tags= Tag.query.all()
 
-    return render_template('post-edit.html', post=post)
+    return render_template('post-edit.html', post=post, tags=tags)
 
 @app.route('/posts/<post_id>/edit', methods=['POST'])
 def handle_edit_post(post_id):
@@ -153,13 +156,14 @@ def handle_edit_post(post_id):
 
     post.title=title
     post.content=content
+  
+    tags=[int(tag) for tag in request.form.getlist('tags')]
+    post.tgs=Tag.query.filter(Tag.id.in_(tags)).all()
 
     db.session.add(post)
     db.session.commit()
 
     return redirect(f'/posts/{post.id}')
-
-# ** Error on delete for posts_tags table foreign key constraint
 
 @app.route('/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
@@ -232,15 +236,12 @@ def handle_edit_tag(tag_id):
 
     return redirect(f"/tags/{tag_id}")
 
+@app.route('/delete/<tag_id>', methods=['POST'])
+def handle_delete_tag(tag_id):
+    """delete tag with associated id"""
 
-# ** getting foreign key error for posts_tags table ** 
+    Tag.query.filter_by(id=tag_id).delete()
 
-# @app.route('/delete/<tag_id>', methods=['POST'])
-# def handle_delete_tag(tag_id):
-#     """delete tag with associated id"""
+    db.session.commit()
 
-#     Tag.query.filter_by(id=tag_id).delete()
-
-#     db.session.commit()
-
-#     return redirect('/tags')
+    return redirect('/tags')

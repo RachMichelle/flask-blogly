@@ -24,6 +24,8 @@ class User(db.Model):
 
     img_url = db.Column(db.String, nullable = False, default='https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg')
 
+    psts = db.relationship('Post', backref ='usr', cascade="all, delete")
+
 
     def get_full_name(self):
         u=self
@@ -47,10 +49,6 @@ class Post(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    usr = db.relationship('User', backref ='psts')
-
-    tgs = db.relationship('Tag', secondary = 'posts_tags', backref = 'psts')
-
 class Tag(db.Model):
     """db tag model"""
     __tablename__='tags'
@@ -62,6 +60,8 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
 
     name = db.Column(db.Text, nullable = False)
+
+    psts = db.relationship('Post', secondary = 'posts_tags', cascade="all, delete", backref = 'tgs')
 
 class PostTag(db.Model):
     """db model for tags/posts rel"""
